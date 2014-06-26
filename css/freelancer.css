@@ -1,3 +1,11 @@
+.logo {
+    background-image:url('../img/mit_logo.gif');
+    height:57px;
+    background-repeat:no-repeat;
+    opacity: 0.4;
+    filter: alpha(opacity=40); /*For IE8 and earlier*/
+}
+
 body {
     overflow-x: hidden;
 }
@@ -76,9 +84,9 @@ hr.star-primary:after {
 header {
     text-align: center;
     color: #fff;
-    background-image:url('../img/sunset.jpg');
-    background-size:80%;
-    background-repeat:none;
+    background-image:url('../img/background.jpg');
+    background-size:100%;
+    background-repeat:no-repeat;
     background-color:#cccccc;
 }
 
