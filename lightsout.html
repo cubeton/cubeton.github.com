@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<!-- Game: lights OUT! Code written by Meghan Nelson. All cats reserved. October, 2013.
+The formatted time function based on code from here: http://knowpapa.com/js-stopwatch/ -->
+
+<html>
+<head>
+<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+var runningstate = 1; // 1 means the timecounter is running 0 means counter stopped
+var refresh = setInterval('increment()', 10);
+var numofclicks = 0;
+var lapcounter = 1;
+var time = 0;
+
+function start() {
+refresh = setInterval('increment()', 10);
+}
+
+function stopTimer() {
+clearInterval(refresh);
+
+}
+function startandstop() {
+if(runningstate == 0){
+runningstate = 1;
+start();
+}
+if (runningstate == 1) {
+runningstate = 0;
+      stopTimer(); //turns the timer off
+    }
+  }
+
+  function formattedtime(unformattedtime)
+  {
+   var decisec = Math.floor(unformattedtime/100) + '';
+   var second = Math.floor(unformattedtime/1000);
+   var minute = Math.floor(unformattedtime/60000);
+   decisec = decisec.charAt(decisec.length - 1);
+   second = second - 60 * minute + '';
+   return minute + ':' + second + ':' + decisec;
+  }
+
+  function increment() {
+   time+=10;
+   document.getElementById('stopwatch').value = formattedtime(time);
+  }
+
+  function newGame() {
+   $("table td").each(function() {
+   $(this).removeClass("on");
+   var randomNum = Math.round(Math.random());
+   if(randomNum == 1) {
+   $(this).addClass("on");
+   }
+   });
+   numofclicks=0;
+   $('#clicks').text('Clicks: ' + numofclicks);
+   time = 0;
+  }
+
+  function restartGame() {
+   document.getElementById('lapdetails').value += (lapcounter++) + '. '+ formattedtime(time) + ' Clicks: ' + numofclicks + '\n';
+  }
+
+  function checkGameEnding(){
+   var allOff = true; /* checks each one to see if it has the "on" class or not. Assumes all are off, since it's easier that way */
+
+   $("table td").each(function() {
+   if( $(this).hasClass("on")){
+   allOff = false;
+   }
+   });
+   if(allOff) {
+   alert('Lights are OUT!!!');
+   restartGame();
+   newGame();
+   }
+  }
+
+  function checkClicks(){
+   numofclicks = numofclicks+1;
+   $('#clicks').text('Clicks: ' + numofclicks);
+  }
+
+  $(document).ready(function() {
+   $("#instruction_set").hide();
+   $('#clicks').text('Clicks: ' + numofclicks);
+   newGame();
+
+   $("#instructions").click(function() {
+   $("#instruction_set").slideToggle("slow");
+   });
+
+   $("td#1").click(function() { /*Corner buttons */
+   $("td#1").toggleClass("on");
+   $("td#2").toggleClass("on");
+   $("td#4").toggleClass("on");
+   $("td#5").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#3").click(function() { /*Corner buttons */
+   $("td#3").toggleClass("on");
+   $("td#2").toggleClass("on");
+   $("td#5").toggleClass("on");
+   $("td#6").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#7").click(function() { /*Corner buttons */
+   $("td#4").toggleClass("on");
+   $("td#5").toggleClass("on");
+   $("td#7").toggleClass("on");
+   $("td#8").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#9").click(function() { /*Corner buttons */
+   $("td#9").toggleClass("on");
+   $("td#5").toggleClass("on");
+   $("td#6").toggleClass("on");
+   $("td#8").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#2" ).click(function() { /*Edge buttons */
+   $("td#1").toggleClass("on");
+   $("td#2").toggleClass("on");
+   $("td#3").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#6" ).click(function() { /*Edge buttons */
+   $("td#3").toggleClass("on");
+   $("td#6").toggleClass("on");
+   $("td#9").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#8" ).click(function() { /*Edge buttons */
+   $("td#7").toggleClass("on");
+   $("td#8").toggleClass("on");
+   $("td#9").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#4" ).click(function() { /*Edge buttons */
+   $("td#1").toggleClass("on");
+   $("td#4").toggleClass("on");
+   $("td#7").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+   $( "td#5" ).click(function() { /*Center buttons */
+   $("td#5").toggleClass("on");
+   $("td#2").toggleClass("on");
+   $("td#6").toggleClass("on");
+   $("td#8").toggleClass("on");
+   $("td#4").toggleClass("on");
+   checkClicks();
+   checkGameEnding();
+   });
+
+  });
+</script>
+
+<style type="text/css" media=screen>
+
+h1 {
+margin-left: 110px;
+}
+h6{margin-left: 140px; text-decoration: underline;}
+
+.button, .button:visited {
+margin: 30px 0 0 140px;
+background: #222 url(overlay.png) repeat-x;
+display: inline-block;
+padding: 5px 10px 6px;
+color: #fff;
+text-decoration: none;
+text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+border-bottom: 1px solid rgba(0,0,0,0.25);
+border-radius: 10px;
+
+}
+
+.blue.button, .blue.button:visited { background-color: #2981e4; }
+.blue.button:hover { background-color: #2575cf; }
+
+html {
+margin-left: 30px;
+padding-left:20px;
+font-family: 'Raleway', serif;
+}
+table {
+margin: 5px;
+padding: 0px;
+cursor: pointer;
+position: relative;
+float: left;
+}
+
+td{
+border-radius: 5px;
+box-shadow: 2px 4px 5px black;
+background-color: #52524E;
+color: #000;
+}
+
+
+td:hover {
+background-color: #2B2B29;
+}
+
+td.on{
+background-color: #F5F249;
+color: #000;
+}
+
+td.on:hover{
+background-color: #FFFEAD;
+}
+
+#stop {
+position: relative;
+display: inline-block;
+margin-top: 40px;
+margin-left: 30px;
+border-style: dashed;
+border-width: 2px;
+border-radius: 30px;
+}
+
+#clicks{
+position: relative;
+display:inline-block;
+width: 70px;
+height: 20px;
+border: black;
+border-radius: 2px;
+margin-left: 150px;
+}
+
+#instructions {
+margin: 0 0 0 130px;
+padding: 0px;
+}
+#instruction_set {
+margin: 0px;
+margin-left: 10px;
+padding: 5px 0 10px 10px;
+width: 350px;
+font-size: 12px;
+}
+.stopwatch { padding: 5px; border:none; width: 160px; margin:15px 5px 5px 10px; border-radius: 2px; background-color: lightgrey;}
+.lap { color: black; padding: 1px; border:black; height:75%; width: 175px; margin:15px 5px; border-radius: 2px; background-color: lightgrey;}
+.button2 {margin-left: 20px; margin-top: 0px;}
+.red.button2, .red.button2:visited { background-color: #FF8080; }
+.red.button2:hover { background-color: #990000; }
+
+#footer {
+position: absolute;
+bottom: 0px;
+left: 10px;
+font-size: 7px;
+margin-left: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1> Lights Out!</h1>
+<h6 id="instructions"> Gameplay instructions</h6>
+<div id="instruction_set">
+<p>The goal is to turn all the lights <em>OUT!</em></p>
+<p>You can do so by pressing the buttons.</p>
+<p>There are three types of buttons: corner, edge, and center</p>
+<p>Corner buttons toggle the four lights in the corner on and off.
+Edge buttons toggle the two neighboring lights on and off. The center button toggles itself and the four lights surrounding it on and off. Use these to turn the lights out!</p>
+</p>
+</div>
+<input type="button" id="newgame" name="newgame" value="New Game" class="blue button" onclick="newGame();">
+<div id="clicks"></div>
+<p></p>
+<table cellpadding="45%" cellspacing="20px" >
+<tr>
+<td id="1" class=""></td>
+<td id="2" class=""></td>
+<td id="3" class=""></td>
+</tr>
+<tr>
+<td id="4" class=""></td>
+<td id="5" class=""></td>
+<td id="6" class=""></td>
+</tr>
+<tr>
+<td id="7" class=""></td>
+<td id="8" class=""></td>
+<td id="9" class=""></td>
+</tr>
+</table>
+
+<div id="stop">
+<input class="stopwatch" id="stopwatch" value="0:0:0" type="text"><br>
+<input class="button button2 red" id="startandstopbutton" value="Stop" onclick="startandstop();" type="button"><br>
+<textarea class="lap" id="lapdetails" rows="6" cols="70"></textarea>
+</div>
+<p id="footer">Written by Meghan Nelson. Contact at meghan@meghan.net. All cats reserved</p>
+</body>
+</html>
+
+
